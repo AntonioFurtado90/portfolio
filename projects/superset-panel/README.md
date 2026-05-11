@@ -42,7 +42,7 @@ O PostgreSQL já sobe com a tabela `pedidos` carregada automaticamente via `db/i
 chmod +x setup.sh && ./setup.sh
 ```
 
-Acesse **http://localhost:8088** · login: `admin` / `admin`
+Acesse **http://localhost:8089** · login: `admin` / `admin`
 
 ### 3. Configurar no Superset
 
@@ -63,7 +63,7 @@ No painel do Cloudflare Zero Trust, em **Tunnels → seu tunnel → Edit → Pub
 
 | Subdomain | Domain | Service |
 |---|---|---|
-| `superset` | `sinapsebi.com.br` | `http://localhost:8088` |
+| `superset` | `sinapsebi.com.br` | `http://localhost:8089` |
 
 O dashboard fica acessível em `https://superset.sinapsebi.com.br`.
 

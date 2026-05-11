@@ -2,39 +2,47 @@ version: "3.8"
 
 services:
 
-  db:
+  superset-db:
     image: postgres:15-alpine
-    container_name: superset-db
+    container_name: portfolio-superset-db
     restart: unless-stopped
     environment:
       POSTGRES_DB: operacional
       POSTGRES_USER: superset
       POSTGRES_PASSWORD: superset
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - superset_pg_data:/var/lib/postgresql/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "superset"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - superset_net
 
   superset:
     image: apache/superset:3.1.0
-    container_name: superset-app
+    container_name: portfolio-superset
     restart: unless-stopped
     depends_on:
-      db:
+      superset-db:
         condition: service_healthy
     ports:
-      - "8088:8088"
+      - "8089:8088"
     environment:
       SUPERSET_SECRET_KEY: "${SUPERSET_SECRET_KEY:-change-me-to-a-long-random-string}"
-      SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://superset:superset@db:5432/operacional"
+      SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://superset:superset@superset-db:5432/operacional"
     volumes:
       - ./superset_config.py:/app/pythonpath/superset_config.py
       - superset_home:/app/superset_home
+    networks:
+      - superset_net
+
+networks:
+  superset_net:
+    name: portfolio_superset_net
 
 volumes:
-  postgres_data:
+  superset_pg_data:
   superset_home:

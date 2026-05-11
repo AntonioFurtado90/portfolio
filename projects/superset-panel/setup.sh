@@ -5,13 +5,13 @@
 set -e
 
 echo "⏳ Aguardando Superset inicializar..."
-until docker exec superset-app superset version &>/dev/null; do sleep 3; done
+until docker exec portfolio-superset superset version &>/dev/null; do sleep 3; done
 
 echo "📦 Atualizando schema do banco de metadados..."
-docker exec superset-app superset db upgrade
+docker exec portfolio-superset superset db upgrade
 
 echo "👤 Criando usuário admin..."
-docker exec superset-app superset fab create-admin \
+docker exec portfolio-superset superset fab create-admin \
   --username admin \
   --firstname Admin \
   --lastname Superset \
@@ -20,10 +20,10 @@ docker exec superset-app superset fab create-admin \
   2>/dev/null || echo "  (usuário já existe, ignorando)"
 
 echo "🔑 Inicializando roles e permissões..."
-docker exec superset-app superset init
+docker exec portfolio-superset superset init
 
 echo ""
-echo "✅ Pronto! Acesse http://localhost:8088"
+echo "✅ Pronto! Acesse http://localhost:8089"
 echo "   Login: admin / admin"
 echo ""
 echo "👉 Próximos passos dentro do Superset:"
