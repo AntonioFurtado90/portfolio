@@ -2,7 +2,7 @@
 
 Interactive sales dashboard built with Python, Streamlit and Plotly. Dark-themed, fully responsive, and deployable on Streamlit Cloud.
 
-**Live demo:** _link after deploy_
+**Live demo:** https://sinapsebi.com.br
 
 ---
 

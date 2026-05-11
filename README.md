@@ -2,7 +2,7 @@
 
 Freelancer BI portfolio hosted on GitHub Pages, showcasing end-to-end projects in data visualization and data engineering.
 
-**Live site:** https://antonioFurtado90.github.io/portfolio
+**Live site:** https://sinapsebi.com.br
 
 ---
 
