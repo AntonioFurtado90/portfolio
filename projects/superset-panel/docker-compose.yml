@@ -19,6 +19,16 @@ services:
     networks:
       - superset_net
 
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: portfolio-cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: "${TUNNEL_TOKEN}"
+    networks:
+      - superset_net
+
   superset:
     image: apache/superset:3.1.0
     container_name: portfolio-superset

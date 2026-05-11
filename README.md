@@ -13,7 +13,7 @@ Freelancer BI portfolio hosted on GitHub Pages, showcasing end-to-end projects i
 | [Sales Dashboard](projects/sales-dashboard/) | Python · Streamlit · Plotly | ✅ Done |
 | [HR Analysis](projects/hr-analysis/) | Looker Studio · Google Sheets · Python | 🚧 In progress |
 | [Financial Panel — Power BI](projects/financial-panel/) | Power BI · DAX · Power Query | 🚧 In progress |
-| [Operational Panel — Superset](projects/superset-panel/) | Apache Superset · PostgreSQL · SQL | 🚧 In progress |
+| [Operational Panel — Superset](projects/superset-panel/) | Apache Superset · PostgreSQL · SQL | ✅ Done |
 | [N8N Automations](projects/n8n-automations/) | N8N · API · Webhooks | 🚧 In progress |
 | [Data Warehouse](projects/data-warehouse/) | PostgreSQL · NocoDB · Data Lake | 🚧 In progress |
 | [Excel Automatic Reports](projects/excel-reports/) | Excel · Power Query · VBA | 🚧 In progress |

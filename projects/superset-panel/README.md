@@ -2,7 +2,7 @@
 
 Dashboard operacional open-source com dados fake de pedidos, rodando em Docker e exposto via Cloudflare Tunnel.
 
-**Live demo:** https://superset.sinapsebi.com.br _(após deploy)_
+**Live demo:** https://supersetportifolio.sinapsebi.com.br
 
 ---
 
@@ -63,9 +63,9 @@ No painel do Cloudflare Zero Trust, em **Tunnels → seu tunnel → Edit → Pub
 
 | Subdomain | Domain | Service |
 |---|---|---|
-| `superset` | `sinapsebi.com.br` | `http://localhost:8089` |
+| `supersetportifolio` | `sinapsebi.com.br` | `http://localhost:8089` |
 
-O dashboard fica acessível em `https://superset.sinapsebi.com.br`.
+O dashboard fica acessível em `https://supersetportifolio.sinapsebi.com.br`.
 
 ---
 
@@ -80,5 +80,5 @@ Após criar o dashboard no Superset:
 
 Ou usa o link de compartilhamento público com `?standalone=true`:
 ```
-https://superset.sinapsebi.com.br/superset/dashboard/1/?standalone=true
+https://supersetportifolio.sinapsebi.com.br/superset/dashboard/1/?standalone=true
 ```
