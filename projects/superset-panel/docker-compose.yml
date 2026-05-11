@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
 
   superset-db:
@@ -18,6 +16,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - superset_net
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: portfolio-cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: "${TUNNEL_TOKEN}"
     networks:
       - superset_net
 
