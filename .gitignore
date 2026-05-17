@@ -1,6 +1,9 @@
 # Environment secrets
 .env
 
+# Freelance proposals (private)
+99freelas/
+
 # Claude Code
 .claude/
 

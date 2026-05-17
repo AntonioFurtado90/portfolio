@@ -231,6 +231,46 @@ The root `index.html` is the public-facing portfolio page, auto-deployed via Git
 
 ---
 
+## Freelance proposals — 99freelas/
+
+Proposals are saved as `.txt` files in `99freelas/` (gitignored — never committed).
+
+**Naming convention:** `NN_short_description_client.txt`
+
+**File header format:**
+```
+Projeto: <project title>
+Cliente: <client name and stars>
+Valor: R$ X,XX
+Status: Proposta enviada | Aguardando | Ganho | Perdido
+```
+
+**Workflow:**
+- Each proposal is written in plain text (no markdown) for direct copy-paste into 99Freelas
+- Price guidance: R$100–150 simple Excel · R$300–600 Power BI dashboard · R$800–1800 complex/multi-phase
+- Always lead with "Sou economista" for financial/strategic projects
+- Always end with one clarifying question to qualify the client
+- Skip projects with: expired time, client inactive >2 weeks, 0 stars + >150 proposals
+
+**Current proposals (15 total):**
+01 · Template Excel custos — Tatiana · R$150
+02 · Planilha financeiro — Corporação T. · R$130
+03 · Tratamento e-commerce — Hernani · R$380
+04 · Viabilidade avicultura · R$400
+05 · Dashboard vendas/despesas · R$120
+06 · Consultoria Excel — Gregório · R$100
+07 · Sistema solar Power BI — Itamar · R$1.800
+08 · Dashboard produção — Igor · R$750
+09 · Dashboard executivo 5 fontes — DiegoS · R$1.500
+10 · Dados confinamento — Sem N. · R$450
+11 · Precificação rotas — Plínio · R$600
+12 · Power BI + IA Generativa — Danilo · R$1.400
+13 · Microdados PNAD — Anna · R$250
+14 · Viabilidade plano negócios — Vinícius · R$650
+15 · Metas clínica médica — Wagner · R$900
+
+---
+
 ## Roadmap
 
 - [ ] `index.html` — portfolio landing page
