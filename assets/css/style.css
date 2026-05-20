@@ -242,6 +242,21 @@ ul {
   opacity: 0.6;
 }
 
+.superset-embed {
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.superset-embed iframe {
+  width: 100%;
+  height: 100%;
+  transform: scale(0.6);
+  transform-origin: top left;
+  width: 167%;
+  height: 334px;
+  border: none;
+}
+
 .card-body {
   padding: 24px;
 }
