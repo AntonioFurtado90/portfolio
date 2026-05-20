@@ -1,5 +1,6 @@
 # Environment secrets
 .env
+credentials.json
 
 # Freelance proposals (private)
 99freelas/
