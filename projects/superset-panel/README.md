@@ -2,9 +2,9 @@
 
 Dashboard operacional open-source com dados fake de pedidos, rodando em Docker e exposto via Cloudflare Tunnel.
 
-**Live demo:** https://supersetportifolio.sinapsebi.com.br/superset/dashboard/7b8750ab-4e20-4a71-8c54-1e18b7072a29/?standalone=true
+**Live demo:** https://supersetportifolio.sinapsebi.com.br/superset/dashboard/1/?standalone=true
 
-**Dashboard embed ID:** `7b8750ab-4e20-4a71-8c54-1e18b7072a29`
+**Dashboard ID:** `1` (numeric — use for direct URL access)
 
 ---
 
