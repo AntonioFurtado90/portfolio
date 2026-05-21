@@ -68,6 +68,18 @@
 
 ---
 
+## Calculated fields (create in Looker Studio — source: `funcionarios`)
+
+| Field name | Formula | Use |
+|---|---|---|
+| `Turnover %` | `COUNT(CASE WHEN status = "Desligado" THEN id_funcionario ELSE NULL END) / COUNT(id_funcionario)` | Turnover scorecard — format as % |
+| `Total Ativos` | `COUNT(CASE WHEN status = "Ativo" THEN id_funcionario ELSE NULL END)` | Headcount ativo |
+| `Total Desligados` | `COUNT(CASE WHEN status = "Desligado" THEN id_funcionario ELSE NULL END)` | Total de desligamentos |
+
+> In Looker Studio: **Resource → Manage added data sources → Edit → Add a field**
+
+---
+
 ## Calendar dimension usage
 
 The `dim_calendario` tab provides clean time keys for all charts:
