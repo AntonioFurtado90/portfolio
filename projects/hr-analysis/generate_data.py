@@ -125,42 +125,46 @@ def build_calendar() -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-# ── Aggregated views ──────────────────────────────────────────────────────────
+# ── Fact tables (one date column each — required by Looker Studio) ────────────
 
-def build_admissoes_por_mes(df: pd.DataFrame) -> pd.DataFrame:
-    """Admissions per month and department, joined with calendar keys."""
-    admissoes = df.copy()
-    admissoes["ano_mes"] = pd.to_datetime(admissoes["data_admissao"]).dt.to_period("M").astype(str)
-    admissoes["ano"] = pd.to_datetime(admissoes["data_admissao"]).dt.year
-    admissoes["mes"] = pd.to_datetime(admissoes["data_admissao"]).dt.month
-    admissoes["mes_nome"] = admissoes["mes"].map(MESES_PT)
-    admissoes["trimestre"] = pd.to_datetime(admissoes["data_admissao"]).dt.quarter.apply(lambda q: f"T{q}")
+def build_fato_admissoes(df: pd.DataFrame) -> pd.DataFrame:
+    """One row per employee. Single date field: data_admissao.
+    Looker Studio uses this as the Date Range Dimension for admissions charts."""
+    fato = df.copy()
+    dt = pd.to_datetime(fato["data_admissao"])
+    fato["ano_mes"]    = dt.dt.to_period("M").astype(str)
+    fato["ano"]        = dt.dt.year
+    fato["mes"]        = dt.dt.month
+    fato["mes_nome"]   = fato["mes"].map(MESES_PT)
+    fato["trimestre"]  = dt.dt.quarter.apply(lambda q: f"T{q}")
+    fato["semestre"]   = dt.dt.month.apply(lambda m: "S1" if m <= 6 else "S2")
 
-    agg = (
-        admissoes.groupby(["ano_mes", "ano", "mes", "mes_nome", "trimestre", "departamento"])
-        .size()
-        .reset_index(name="total_admissoes")
-        .sort_values(["ano_mes", "departamento"])
-    )
-    return agg
+    cols = [
+        "id_funcionario", "data_admissao", "ano_mes", "ano",
+        "mes", "mes_nome", "trimestre", "semestre",
+        "departamento", "cargo", "salario",
+    ]
+    return fato[cols].sort_values("data_admissao").reset_index(drop=True)
 
 
-def build_demissoes_por_mes(df: pd.DataFrame) -> pd.DataFrame:
-    """Terminations per month and department, joined with calendar keys."""
-    demissoes = df[df["data_saida"] != ""].copy()
-    demissoes["ano_mes"] = pd.to_datetime(demissoes["data_saida"]).dt.to_period("M").astype(str)
-    demissoes["ano"] = pd.to_datetime(demissoes["data_saida"]).dt.year
-    demissoes["mes"] = pd.to_datetime(demissoes["data_saida"]).dt.month
-    demissoes["mes_nome"] = demissoes["mes"].map(MESES_PT)
-    demissoes["trimestre"] = pd.to_datetime(demissoes["data_saida"]).dt.quarter.apply(lambda q: f"T{q}")
+def build_fato_demissoes(df: pd.DataFrame) -> pd.DataFrame:
+    """One row per terminated employee. Single date field: data_saida.
+    Looker Studio uses this as the Date Range Dimension for termination charts."""
+    fato = df[df["data_saida"] != ""].copy()
+    dt = pd.to_datetime(fato["data_saida"])
+    fato["ano_mes"]    = dt.dt.to_period("M").astype(str)
+    fato["ano"]        = dt.dt.year
+    fato["mes"]        = dt.dt.month
+    fato["mes_nome"]   = fato["mes"].map(MESES_PT)
+    fato["trimestre"]  = dt.dt.quarter.apply(lambda q: f"T{q}")
+    fato["semestre"]   = dt.dt.month.apply(lambda m: "S1" if m <= 6 else "S2")
 
-    agg = (
-        demissoes.groupby(["ano_mes", "ano", "mes", "mes_nome", "trimestre", "departamento"])
-        .size()
-        .reset_index(name="total_demissoes")
-        .sort_values(["ano_mes", "departamento"])
-    )
-    return agg
+    cols = [
+        "id_funcionario", "data_saida", "ano_mes", "ano",
+        "mes", "mes_nome", "trimestre", "semestre",
+        "departamento", "cargo",
+    ]
+    return fato[cols].sort_values("data_saida").reset_index(drop=True)
 
 
 # ── Google Sheets push ────────────────────────────────────────────────────────
@@ -182,8 +186,8 @@ def write_tab(ws, df: pd.DataFrame) -> None:
 def push_to_sheets(
     funcionarios: pd.DataFrame,
     calendario: pd.DataFrame,
-    admissoes: pd.DataFrame,
-    demissoes: pd.DataFrame,
+    fato_admissoes: pd.DataFrame,
+    fato_demissoes: pd.DataFrame,
 ) -> None:
     credentials_path = os.getenv("GOOGLE_CREDENTIALS_PATH", "credentials.json")
     sheet_id = os.getenv("GOOGLE_SHEET_ID")
@@ -196,10 +200,10 @@ def push_to_sheets(
     spreadsheet = client.open_by_key(sheet_id)
 
     tabs = {
-        "funcionarios":      funcionarios,
-        "dim_calendario":    calendario,
-        "admissoes_por_mes": admissoes,
-        "demissoes_por_mes": demissoes,
+        "funcionarios":    funcionarios,
+        "dim_calendario":  calendario,
+        "fato_admissoes":  fato_admissoes,
+        "fato_demissoes":  fato_demissoes,
     }
 
     for title, df in tabs.items():
@@ -212,18 +216,18 @@ def push_to_sheets(
 
 if __name__ == "__main__":
     print("Gerando dados...")
-    funcionarios = generate_employees()
-    calendario = build_calendar()
-    admissoes = build_admissoes_por_mes(funcionarios)
-    demissoes = build_demissoes_por_mes(funcionarios)
+    funcionarios    = generate_employees()
+    calendario      = build_calendar()
+    fato_admissoes  = build_fato_admissoes(funcionarios)
+    fato_demissoes  = build_fato_demissoes(funcionarios)
 
-    print(f"  funcionarios:      {len(funcionarios)} registros")
-    print(f"  dim_calendario:    {len(calendario)} meses")
-    print(f"  admissoes_por_mes: {len(admissoes)} linhas")
-    print(f"  demissoes_por_mes: {len(demissoes)} linhas")
+    print(f"  funcionarios:   {len(funcionarios)} registros")
+    print(f"  dim_calendario: {len(calendario)} meses")
+    print(f"  fato_admissoes: {len(fato_admissoes)} linhas (date field: data_admissao)")
+    print(f"  fato_demissoes: {len(fato_demissoes)} linhas (date field: data_saida)")
 
     print("\nEnviando para o Google Sheets...")
-    push_to_sheets(funcionarios, calendario, admissoes, demissoes)
+    push_to_sheets(funcionarios, calendario, fato_admissoes, fato_demissoes)
 
     print(f"\n✓ Concluído!")
     print(f"  Ativos:     {len(funcionarios[funcionarios.status == 'Ativo'])}")

@@ -6,12 +6,15 @@
 
 ## Data sources (4 tabs — add each separately in Looker Studio)
 
-| Tab | Use |
-|---|---|
-| `funcionarios` | Main fact table — headcount, salary, absences |
-| `dim_calendario` | Calendar dimension — join via `ano_mes` |
-| `admissoes_por_mes` | Monthly admissions aggregated by department |
-| `demissoes_por_mes` | Monthly terminations aggregated by department |
+| Tab | Date field | Use |
+|---|---|---|
+| `funcionarios` | _(none)_ | Headcount snapshot, salary, absences, status |
+| `dim_calendario` | `data_inicio_mes` | Calendar reference — year/month/quarter filters |
+| `fato_admissoes` | **`data_admissao`** | All admission charts — one date column only |
+| `fato_demissoes` | **`data_saida`** | All termination charts — one date column only |
+
+> Looker Studio only supports one Date Range Dimension per data source.
+> Keeping admissions and terminations in separate tabs solves this limitation.
 
 ---
 
@@ -35,23 +38,23 @@
 | Média faltas/mês | Scorecard | funcionarios | — | AVG(media_faltas_mes) |
 | Ticket médio salário | Scorecard | funcionarios | — | AVG(salario) |
 
-### Page 2 — Admissões (linked to dim_calendario via ano_mes)
+### Page 2 — Admissões (source: `fato_admissoes`, Date Range Dimension: `data_admissao`)
 
-| Chart | Type | Source | Dimension | Metric |
-|---|---|---|---|---|
-| Admissões ao longo do tempo | Line chart | admissoes_por_mes | ano_mes | SUM(total_admissoes) |
-| Admissões por departamento/mês | Stacked bar | admissoes_por_mes | ano_mes + departamento | SUM(total_admissoes) |
-| Total admitido por departamento | Bar chart | admissoes_por_mes | departamento | SUM(total_admissoes) |
-| Admissões por trimestre | Bar chart | admissoes_por_mes | trimestre | SUM(total_admissoes) |
+| Chart | Type | Dimension | Metric |
+|---|---|---|---|
+| Admissões ao longo do tempo | Line chart | ano_mes | COUNT(id_funcionario) |
+| Admissões por departamento/mês | Stacked bar | ano_mes + departamento | COUNT(id_funcionario) |
+| Total admitido por departamento | Bar chart | departamento | COUNT(id_funcionario) |
+| Admissões por trimestre | Bar chart | trimestre | COUNT(id_funcionario) |
 
-### Page 3 — Demissões (linked to dim_calendario via ano_mes)
+### Page 3 — Demissões (source: `fato_demissoes`, Date Range Dimension: `data_saida`)
 
-| Chart | Type | Source | Dimension | Metric |
-|---|---|---|---|---|
-| Demissões ao longo do tempo | Line chart | demissoes_por_mes | ano_mes | SUM(total_demissoes) |
-| Demissões por departamento/mês | Stacked bar | demissoes_por_mes | ano_mes + departamento | SUM(total_demissoes) |
-| Turnover por departamento | Bar chart | demissoes_por_mes | departamento | SUM(total_demissoes) |
-| Demissões por trimestre | Bar chart | demissoes_por_mes | trimestre | SUM(total_demissoes) |
+| Chart | Type | Dimension | Metric |
+|---|---|---|---|
+| Demissões ao longo do tempo | Line chart | ano_mes | COUNT(id_funcionario) |
+| Demissões por departamento/mês | Stacked bar | ano_mes + departamento | COUNT(id_funcionario) |
+| Turnover por departamento | Bar chart | departamento | COUNT(id_funcionario) |
+| Demissões por trimestre | Bar chart | trimestre | COUNT(id_funcionario) |
 
 ### Page 4 — Headcount & Salários
 
